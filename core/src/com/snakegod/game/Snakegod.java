@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class Snakegod extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -35,8 +37,8 @@ public class Snakegod extends ApplicationAdapter {
 		bmf.setColor(Color.WHITE);
 		bmf.getData().setScale(2,2);
 		count = 0;
-		snakeOne = new Snake(direction.RIGHT, direction.RIGHT, new Array<Vector2>());
-		snakeTwo = new Snake(direction.LEFT, direction.LEFT, new Array<Vector2>());
+		snakeOne = new Snake(direction.RIGHT, direction.RIGHT, new LinkedList<Vector2>());
+		snakeTwo = new Snake(direction.LEFT, direction.LEFT, new LinkedList<Vector2>());
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 64, 64);
 		shape = new ShapeRenderer();
@@ -44,21 +46,21 @@ public class Snakegod extends ApplicationAdapter {
 		snake.width = 1;
 		snake.height = 1;
 
-		snakeOne.snakeArray.add(new Vector2(7,10));
-		snakeOne.snakeArray.add(new Vector2(8,10));
-		snakeOne.snakeArray.add(new Vector2(9,10));
-		snakeOne.snakeArray.add(new Vector2(10,10));
-		snakeOne.snakeArray.add(new Vector2(11,10));
-		snakeOne.snakeArray.add(new Vector2(12,10));
-		snakeOne.snakeArray.add(new Vector2(13,10));
+		snakeOne.snakeList.add(new Vector2(7,10));
+		snakeOne.snakeList.add(new Vector2(8,10));
+		snakeOne.snakeList.add(new Vector2(9,10));
+		snakeOne.snakeList.add(new Vector2(10,10));
+		snakeOne.snakeList.add(new Vector2(11,10));
+		snakeOne.snakeList.add(new Vector2(12,10));
+		snakeOne.snakeList.add(new Vector2(13,10));
 
-		snakeTwo.snakeArray.add(new Vector2(56,11));
-		snakeTwo.snakeArray.add(new Vector2(55,11));
-		snakeTwo.snakeArray.add(new Vector2(54,11));
-		snakeTwo.snakeArray.add(new Vector2(53,11));
-		snakeTwo.snakeArray.add(new Vector2(52,11));
-		snakeTwo.snakeArray.add(new Vector2(51,11));
-		snakeTwo.snakeArray.add(new Vector2(50,11));
+		snakeTwo.snakeList.add(new Vector2(56,11));
+		snakeTwo.snakeList.add(new Vector2(55,11));
+		snakeTwo.snakeList.add(new Vector2(54,11));
+		snakeTwo.snakeList.add(new Vector2(53,11));
+		snakeTwo.snakeList.add(new Vector2(52,11));
+		snakeTwo.snakeList.add(new Vector2(51,11));
+		snakeTwo.snakeList.add(new Vector2(50,11));
 
 		juicer = new Rectangle();
 		juicer.x = 20;
@@ -77,11 +79,11 @@ public class Snakegod extends ApplicationAdapter {
 		shape.begin(ShapeRenderer.ShapeType.Filled);
 		shape.setColor(Color.SKY);
 
-		for (Vector2 current : new Array.ArrayIterator<>(snakeOne.snakeArray)) {
+		for (Vector2 current : snakeOne.snakeList) {
 			shape.rect(current.x,current.y, snake.width, snake.height);
 		}
 		shape.setColor(Color.RED);
-		for (Vector2 current : new Array.ArrayIterator<>(snakeTwo.snakeArray)) {
+		for (Vector2 current : snakeTwo.snakeList) {
 			shape.rect(current.x,current.y, snake.width, snake.height);
 		}
 
@@ -136,32 +138,37 @@ public class Snakegod extends ApplicationAdapter {
 		}
 	}
 
-	public void hitCheck(Array<Vector2> one, Array<Vector2> two) {
-		if (one.get(one.size-1).x == juicer.x && one.get(one.size-1).y == juicer.y) {
-			one.insert(0,new Vector2(one.get(0).x, one.get(0).y));
+	public void hitCheck(LinkedList<Vector2> one, LinkedList<Vector2> two) {
+		if (one.getLast().x == juicer.x && one.getLast().y == juicer.y) {
+			one.addFirst(new Vector2(one.getFirst().x, one.getFirst().y));
 			juicer.x = (int) (Math.random() * (63-1) + 1);
 			juicer.y = (int) (Math.random() * (63-1) + 1);
 			score++;
 		}
-		else if (two.get(two.size-1).x == juicer.x && two.get(two.size-1).y == juicer.y) {
-			two.insert(0,new Vector2(two.get(0).x, two.get(0).y));
+		else if (two.getLast().x == juicer.x && two.getLast().y == juicer.y) {
+			two.addFirst(new Vector2(two.getFirst().x, two.getFirst().y));
 			juicer.x = (int) (Math.random() * (63-1) + 1);
 			juicer.y = (int) (Math.random() * (63-1) + 1);
 			score++;
 		}
 	}
 
-	public void deathCheck(Vector2 head, Array<Vector2> check1, Array<Vector2> check2) {
-		for (int i = 0; i < check1.size-1; i++) {
-			if (head.x == check1.get(i).x && head.y == check1.get(i).y) {
+	public void deathCheck(Vector2 head, LinkedList<Vector2> check1, LinkedList<Vector2> check2) {
+		Iterator<Vector2> iterator = check1.iterator();
+		while (iterator.hasNext()) {
+			Vector2 part = iterator.next();
+			if (!iterator.hasNext()) {break;}
+			if (head.x == part.x && head.y == part.y) {
 				dispose();
 				create();
 				break;
 			}
 		}
 
-		for (int i = 0; i < check2.size; i++) {
-			if (head.x == check2.get(i).x && head.y == check2.get(i).y) {
+		iterator = check2.iterator();
+		while (iterator.hasNext()) {
+			Vector2 part = iterator.next();
+			if (head.x == part.x && head.y == part.y) {
 				dispose();
 				create();
 				break;
@@ -172,15 +179,15 @@ public class Snakegod extends ApplicationAdapter {
 	public void checks() {
 		snakeMovement(snakeOne);
 		snakeMovement(snakeTwo);
-		hitCheck(snakeOne.snakeArray, snakeTwo.snakeArray);
-		deathCheck(snakeOne.getHead(), snakeOne.snakeArray, snakeTwo.snakeArray);
-		deathCheck(snakeTwo.getHead(), snakeTwo.snakeArray, snakeOne.snakeArray);
+		hitCheck(snakeOne.snakeList, snakeTwo.snakeList);
+		deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
+		deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
 	}
 
 	public void snakeMovement(Snake snake) {
-		snake.snakeArray.removeIndex(0);
-		float x = snake.snakeArray.get(snake.snakeArray.size-1).x;
-		float y = snake.snakeArray.get(snake.snakeArray.size-1).y;
+		snake.snakeList.removeFirst();
+		float x = snake.snakeList.getLast().x;
+		float y = snake.snakeList.getLast().y;
 		Vector2 moving = new Vector2(x,y);
 
 		if(snake.d == direction.LEFT) {
@@ -199,7 +206,7 @@ public class Snakegod extends ApplicationAdapter {
 			moving.y -= speed;
 			if (moving.y < 0) {moving.y = 63;}
 		}
-		snake.snakeArray.add(moving);
+		snake.snakeList.add(moving);
 	}
 
 	enum direction{

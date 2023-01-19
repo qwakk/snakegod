@@ -1,21 +1,22 @@
 package com.snakegod.game;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+
+import java.util.LinkedList;
 
 public class Snake {
     Snakegod.direction d;
     Snakegod.direction ld;
-    Array<Vector2> snakeArray;
+    LinkedList<Vector2> snakeList;
 
-    public Snake(Snakegod.direction d, Snakegod.direction ld, Array<Vector2> snakeArray) {
+    public Snake(Snakegod.direction d, Snakegod.direction ld, LinkedList<Vector2> snakeList) {
         this.d = d;
         this.ld = ld;
-        this.snakeArray = snakeArray;
+        this.snakeList = snakeList;
     }
 
     public Vector2 getHead() {
-        return snakeArray.get(snakeArray.size-1);
+        return snakeList.getLast();
     }
 
 }
