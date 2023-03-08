@@ -26,7 +26,7 @@ public class Snakegod extends ApplicationAdapter {
 	Snake snakeTwo;
 	int count;
 	Integer score;
-	float speed;
+	int speed;
 
 	@Override
 	public void create () {
@@ -177,36 +177,11 @@ public class Snakegod extends ApplicationAdapter {
 	}
 
 	public void checks() {
-		snakeMovement(snakeOne);
-		snakeMovement(snakeTwo);
+		snakeOne.move(speed);
+		snakeTwo.move(speed);
 		hitCheck(snakeOne.snakeList, snakeTwo.snakeList);
 		deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
 		deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
-	}
-
-	public void snakeMovement(Snake snake) {
-		snake.snakeList.removeFirst();
-		float x = snake.snakeList.getLast().x;
-		float y = snake.snakeList.getLast().y;
-		Vector2 moving = new Vector2(x,y);
-
-		if(snake.d == direction.LEFT) {
-			moving.x -= speed;
-			if (moving.x < 0) {moving.x = 63;}
-		}
-		if(snake.d == direction.RIGHT) {
-			moving.x += speed;
-			if (moving.x > 63) {moving.x = 0;}
-		}
-		if(snake.d == direction.UP) {
-			moving.y += speed;
-			if (moving.y > 63) {moving.y = 0;}
-		}
-		if(snake.d == direction.DOWN) {
-			moving.y -= speed;
-			if (moving.y < 0) {moving.y = 63;}
-		}
-		snake.snakeList.add(moving);
 	}
 
 	enum direction{

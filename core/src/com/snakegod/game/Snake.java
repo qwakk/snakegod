@@ -19,4 +19,29 @@ public class Snake {
         return snakeList.getLast();
     }
 
+    public void move(int speed) {
+        snakeList.removeFirst();
+        float x = snakeList.getLast().x;
+        float y = snakeList.getLast().y;
+        Vector2 moving = new Vector2(x,y);
+
+        if(d == Snakegod.direction.LEFT) {
+            moving.x -= speed;
+            if (moving.x < 0) {moving.x = 63;}
+        }
+        if(d == Snakegod.direction.RIGHT) {
+            moving.x += speed;
+            if (moving.x > 63) {moving.x = 0;}
+        }
+        if(d == Snakegod.direction.UP) {
+            moving.y += speed;
+            if (moving.y > 63) {moving.y = 0;}
+        }
+        if(d == Snakegod.direction.DOWN) {
+            moving.y -= speed;
+            if (moving.y < 0) {moving.y = 63;}
+        }
+        snakeList.add(moving);
+    }
+
 }
