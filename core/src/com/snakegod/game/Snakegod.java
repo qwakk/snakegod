@@ -1,6 +1,7 @@
 package com.snakegod.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,7 +12,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Snakegod extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -22,7 +25,7 @@ public class Snakegod extends ApplicationAdapter {
 	ShapeRenderer shape;
 	Snake snakeOne;
 	Snake snakeTwo;
-	int count;
+	double count;
 	Integer score;
 	int speed;
 
@@ -95,20 +98,20 @@ public class Snakegod extends ApplicationAdapter {
 		shape.rect(juicer.x, juicer.y, juicer.width, juicer.height);
 		shape.end();
 
-		if (count == 6) {
+		if (count >= 0.1) {
 			snakeOne.ld = snakeOne.d;
 			snakeTwo.ld = snakeTwo.d;
 			snakeOne.move(speed);
 			snakeTwo.move(speed);
 			checks();
-			count = 0;
+			count-= 0.1;
 		}
 
 		batch.begin();
 		bmf.draw(batch, "SCORE = "+score.toString(),0,1000);
 		batch.end();
 
-		count++;
+		count += Gdx.graphics.getDeltaTime();
 	}
 
 	@Override
@@ -117,15 +120,9 @@ public class Snakegod extends ApplicationAdapter {
 		batch.dispose();
 	}
 
-	public void hitCheck(LinkedList<Vector2> one, LinkedList<Vector2> two) {
-		if (one.getLast().x == juicer.x && one.getLast().y == juicer.y) {
-			one.addFirst(new Vector2(one.getFirst().x, one.getFirst().y));
-			juicer.x = (int) (Math.random() * (63-1) + 1);
-			juicer.y = (int) (Math.random() * (63-1) + 1);
-			score++;
-		}
-		else if (two.getLast().x == juicer.x && two.getLast().y == juicer.y) {
-			two.addFirst(new Vector2(two.getFirst().x, two.getFirst().y));
+	public void hitCheck(LinkedList<Vector2> snake) {
+		if (snake.getLast().x == juicer.x && snake.getLast().y == juicer.y) {
+			snake.addFirst(new Vector2(snake.getFirst().x, snake.getFirst().y));
 			juicer.x = (int) (Math.random() * (63-1) + 1);
 			juicer.y = (int) (Math.random() * (63-1) + 1);
 			score++;
@@ -140,7 +137,8 @@ public class Snakegod extends ApplicationAdapter {
 	}
 
 	public void checks() {
-		hitCheck(snakeOne.snakeList, snakeTwo.snakeList);
+		hitCheck(snakeOne.snakeList);
+		hitCheck(snakeTwo.snakeList);
 		deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
 		deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
 	}
