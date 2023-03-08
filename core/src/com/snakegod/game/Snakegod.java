@@ -133,12 +133,7 @@ public class Snakegod extends ApplicationAdapter {
 	}
 
 	public void deathCheck(Vector2 head, LinkedList<Vector2> check1, LinkedList<Vector2> check2) {
-		List<Vector2> sub = check1.subList(0,check1.size()-1);
-		if (sub.contains(head)) {
-			dispose();
-			create();
-		}
-		else if (check2.contains(head)) {
+		if (check1.subList(0,check1.size()-1).contains(head) || check2.contains(head)) {
 			dispose();
 			create();
 		}
