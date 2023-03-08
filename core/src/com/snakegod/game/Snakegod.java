@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,8 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Snakegod extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -37,8 +35,13 @@ public class Snakegod extends ApplicationAdapter {
 		bmf.setColor(Color.WHITE);
 		bmf.getData().setScale(2,2);
 		count = 0;
-		snakeOne = new Snake(direction.RIGHT, direction.RIGHT, new LinkedList<Vector2>());
-		snakeTwo = new Snake(direction.LEFT, direction.LEFT, new LinkedList<Vector2>());
+
+		snakeOne = new Snake(direction.RIGHT, direction.RIGHT, new LinkedList<Vector2>()
+							, new ArrayList<>(Arrays.asList(Input.Keys.A, Input.Keys.D, Input.Keys.W, Input.Keys.S)));
+
+		snakeTwo = new Snake(direction.LEFT, direction.LEFT, new LinkedList<Vector2>()
+							, new ArrayList<>(Arrays.asList(Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)));
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 64, 64);
 		shape = new ShapeRenderer();
@@ -71,7 +74,8 @@ public class Snakegod extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		inputChecker();
+		InputHandler.getInput(snakeOne);
+		InputHandler.getInput(snakeTwo);
 
 		ScreenUtils.clear(0, 0, 0, 1);
 		camera.update();
@@ -109,33 +113,6 @@ public class Snakegod extends ApplicationAdapter {
 	public void dispose () {
 		shape.dispose();
 		batch.dispose();
-	}
-
-	public void inputChecker() {
-		if(Gdx.input.isKeyJustPressed(Input.Keys.A) && snakeOne.d != direction.RIGHT && snakeOne.ld != direction.RIGHT) {
-			snakeOne.d = direction.LEFT;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.D) && snakeOne.d != direction.LEFT && snakeOne.ld != direction.LEFT) {
-			snakeOne.d = direction.RIGHT;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.W) && snakeOne.d != direction.DOWN && snakeOne.ld != direction.DOWN) {
-			snakeOne.d = direction.UP;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.S) && snakeOne.d != direction.UP && snakeOne.ld != direction.UP) {
-			snakeOne.d = direction.DOWN;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.J) && snakeTwo.d != direction.RIGHT && snakeTwo.ld != direction.RIGHT) {
-			snakeTwo.d = direction.LEFT;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.L) && snakeTwo.d != direction.LEFT && snakeTwo.ld != direction.LEFT) {
-			snakeTwo.d = direction.RIGHT;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.I) && snakeTwo.d != direction.DOWN && snakeTwo.ld != direction.DOWN) {
-			snakeTwo.d = direction.UP;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.K) && snakeTwo.d != direction.UP && snakeTwo.ld != direction.UP) {
-			snakeTwo.d = direction.DOWN;
-		}
 	}
 
 	public void hitCheck(LinkedList<Vector2> one, LinkedList<Vector2> two) {
