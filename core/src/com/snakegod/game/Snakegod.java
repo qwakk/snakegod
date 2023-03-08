@@ -101,9 +101,14 @@ public class Snakegod extends ApplicationAdapter {
 		if (count >= 0.1) {
 			snakeOne.ld = snakeOne.d;
 			snakeTwo.ld = snakeTwo.d;
+
 			snakeOne.move(speed);
 			snakeTwo.move(speed);
-			checks();
+
+			hitCheck(snakeOne.snakeList);
+			hitCheck(snakeTwo.snakeList);
+			deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
+			deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
 			count = 0;
 		}
 
@@ -134,13 +139,6 @@ public class Snakegod extends ApplicationAdapter {
 			dispose();
 			create();
 		}
-	}
-
-	public void checks() {
-		hitCheck(snakeOne.snakeList);
-		hitCheck(snakeTwo.snakeList);
-		deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
-		deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
 	}
 
 	enum direction{
