@@ -104,7 +104,7 @@ public class Snakegod extends ApplicationAdapter {
 			snakeOne.move(speed);
 			snakeTwo.move(speed);
 			checks();
-			count-= 0.1;
+			count = 0;
 		}
 
 		batch.begin();
