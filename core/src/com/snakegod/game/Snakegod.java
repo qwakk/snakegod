@@ -98,6 +98,8 @@ public class Snakegod extends ApplicationAdapter {
 		if (count == 6) {
 			snakeOne.ld = snakeOne.d;
 			snakeTwo.ld = snakeTwo.d;
+			snakeOne.move(speed);
+			snakeTwo.move(speed);
 			checks();
 			count = 0;
 		}
@@ -131,31 +133,18 @@ public class Snakegod extends ApplicationAdapter {
 	}
 
 	public void deathCheck(Vector2 head, LinkedList<Vector2> check1, LinkedList<Vector2> check2) {
-		Iterator<Vector2> iterator = check1.iterator();
-		while (iterator.hasNext()) {
-			Vector2 part = iterator.next();
-			if (!iterator.hasNext()) {break;}
-			if (head.x == part.x && head.y == part.y) {
-				dispose();
-				create();
-				break;
-			}
+		List<Vector2> sub = check1.subList(0,check1.size()-1);
+		if (sub.contains(head)) {
+			dispose();
+			create();
 		}
-
-		iterator = check2.iterator();
-		while (iterator.hasNext()) {
-			Vector2 part = iterator.next();
-			if (head.x == part.x && head.y == part.y) {
-				dispose();
-				create();
-				break;
-			}
+		else if (check2.contains(head)) {
+			dispose();
+			create();
 		}
 	}
 
 	public void checks() {
-		snakeOne.move(speed);
-		snakeTwo.move(speed);
 		hitCheck(snakeOne.snakeList, snakeTwo.snakeList);
 		deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
 		deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
