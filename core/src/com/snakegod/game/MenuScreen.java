@@ -37,7 +37,7 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
         batch.begin();
-        bmf.draw(batch, "TESTMENU",500,1000);
+        bmf.draw(batch, "TESTMENU",500,500);
         batch.end();
 
         testWait += delta;
