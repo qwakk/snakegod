@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -34,9 +36,12 @@ public class Snakegod extends ApplicationAdapter {
 		speed = 1;
 		score = 0;
 		batch = new SpriteBatch();
-		bmf = new BitmapFont();
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = 44;
+		bmf = generator.generateFont(parameter);
 		bmf.setColor(Color.WHITE);
-		bmf.getData().setScale(2,2);
+		bmf.getData().setScale(1,1);
 		count = 0;
 
 		snakeOne = new Snake(direction.RIGHT, direction.RIGHT, new LinkedList<Vector2>()
@@ -109,7 +114,7 @@ public class Snakegod extends ApplicationAdapter {
 			hitCheck(snakeTwo.snakeList);
 			deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
 			deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
-			count = 0;
+			count -= 0.1;
 		}
 
 		batch.begin();
