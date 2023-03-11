@@ -167,7 +167,6 @@ public class GameScreen implements Screen {
 
     public void deathCheck(Vector2 head, LinkedList<Vector2> check1, LinkedList<Vector2> check2) {
         if (check1.subList(0,check1.size()-1).contains(head) || check2.contains(head)) {
-            game.menuScreen.testWait = 0;
             game.setMenuScreen();
         }
     }

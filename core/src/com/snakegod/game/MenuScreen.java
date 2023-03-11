@@ -15,7 +15,6 @@ public class MenuScreen implements Screen {
 
     Snakegod game;
     BitmapFont bmf;
-    float testWait = 0;
     Stage stage;
     TextButtonStyle textButtonStyle;
     TextButton playButton;
