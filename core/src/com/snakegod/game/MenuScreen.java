@@ -4,18 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MenuScreen implements Screen {
 
-
     Snakegod game;
     BitmapFont bmf;
-
-    SpriteBatch batch;
-
     float testWait = 0;
+    Stage stage;
+    TextButtonStyle textButtonStyle;
+    TextButton playButton;
+    TextButton exitButton;
 
     public MenuScreen(Snakegod game) {
         this.game = game;
@@ -28,22 +32,42 @@ public class MenuScreen implements Screen {
         parameter.size = 44;
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
-        bmf.getData().setScale(1,1);
 
-        batch = new SpriteBatch();
+        stage = new Stage();
+        textButtonStyle = new TextButtonStyle();
+        textButtonStyle.font = bmf;
+        textButtonStyle.overFontColor = Color.GREEN;
+
+
+        playButton = new TextButton("Play", textButtonStyle);
+        playButton.setPosition(450,550);
+
+        exitButton = new TextButton("Exit", textButtonStyle);
+        exitButton.setPosition(450,450);
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.changeScreen(new GameScreen(game));
+            }
+        });
+
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+        stage.addActor(playButton);
+        stage.addActor(exitButton);
+        Gdx.input.setInputProcessor(stage);
+
+
 
     }
 
     @Override
     public void render(float delta) {
-        batch.begin();
-        bmf.draw(batch, "TESTMENU",500,500);
-        batch.end();
-
-        testWait += delta;
-        if (testWait > 5) {
-            game.changeScreen(new GameScreen(game));
-        }
+        stage.draw();
     }
 
     @Override
@@ -68,6 +92,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
+        stage.dispose();
     }
 }
