@@ -91,6 +91,20 @@ public class GameScreen implements Screen {
         InputHandler.getInput(snakeOne);
         InputHandler.getInput(snakeTwo);
 
+        if (count >= 0.1) {
+            snakeOne.ld = snakeOne.d;
+            snakeTwo.ld = snakeTwo.d;
+
+            snakeOne.move(speed);
+            snakeTwo.move(speed);
+
+            hitCheck(snakeOne.snakeList);
+            hitCheck(snakeTwo.snakeList);
+            deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
+            deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
+            count -= 0.1;
+        }
+
         ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         shape.setProjectionMatrix(camera.combined);
@@ -108,20 +122,6 @@ public class GameScreen implements Screen {
         shape.setColor(Color.GREEN);
         shape.rect(juicer.x, juicer.y, juicer.width, juicer.height);
         shape.end();
-
-        if (count >= 0.1) {
-            snakeOne.ld = snakeOne.d;
-            snakeTwo.ld = snakeTwo.d;
-
-            snakeOne.move(speed);
-            snakeTwo.move(speed);
-
-            hitCheck(snakeOne.snakeList);
-            hitCheck(snakeTwo.snakeList);
-            deathCheck(snakeOne.getHead(), snakeOne.snakeList, snakeTwo.snakeList);
-            deathCheck(snakeTwo.getHead(), snakeTwo.snakeList, snakeOne.snakeList);
-            count -= 0.1;
-        }
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
