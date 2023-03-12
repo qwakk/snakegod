@@ -80,8 +80,8 @@ public class GameScreen implements Screen {
         snakeTwo.snakeList.add(new Vector2(944,512));
 
         juicer = new Rectangle();
-        juicer.x = 512;
-        juicer.y = 512;
+        juicer.x = (int) (Math.random() * (15-1) + 1)*64;
+        juicer.y = (int) (Math.random() * (15-1) + 1)*64;
         juicer.width = 16;
         juicer.height = 16;
     }
