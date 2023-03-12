@@ -71,11 +71,13 @@ public class GameScreen implements Screen {
         snakeOne.snakeList.add(new Vector2(16,512));
         snakeOne.snakeList.add(new Vector2(32,512));
         snakeOne.snakeList.add(new Vector2(48,512));
+        snakeOne.snakeList.add(new Vector2(64,512));
 
         snakeTwo.snakeList.add(new Vector2(1008,512));
         snakeTwo.snakeList.add(new Vector2(992,512));
         snakeTwo.snakeList.add(new Vector2(976,512));
         snakeTwo.snakeList.add(new Vector2(960,512));
+        snakeTwo.snakeList.add(new Vector2(944,512));
 
         juicer = new Rectangle();
         juicer.x = 512;
