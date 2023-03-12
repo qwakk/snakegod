@@ -23,6 +23,7 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     BitmapFont bmf;
     OrthographicCamera camera;
+    FitViewport viewport;
     Rectangle snake;
     Rectangle juicer;
     ShapeRenderer shape;
@@ -31,7 +32,6 @@ public class GameScreen implements Screen {
     double count;
     Integer score;
     int speed;
-    FitViewport viewport;
 
     Snakegod game;
 
@@ -46,9 +46,10 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 44;
+        parameter.size =44;
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
+
         count = 0;
 
         snakeOne = new Snake(Snakegod.direction.RIGHT, Snakegod.direction.RIGHT, new LinkedList<>()
@@ -60,6 +61,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 64, 64);
         viewport = new FitViewport(64,64, camera);
+
         shape = new ShapeRenderer();
         snake = new Rectangle();
         snake.width = 1;
@@ -126,7 +128,7 @@ public class GameScreen implements Screen {
         }
 
         batch.begin();
-        bmf.draw(batch, "SCORE = "+score.toString(),0,1000);
+        bmf.draw(batch, "SCORE = "+score.toString(),0,viewport.getWorldHeight());
         batch.end();
 
         count += Gdx.graphics.getDeltaTime();
