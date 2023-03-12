@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,6 +20,9 @@ public class MenuScreen implements Screen {
     TextButtonStyle textButtonStyle;
     TextButton playButton;
     TextButton exitButton;
+    Color exitColor, playColor;
+
+    ShapeRenderer shape;
 
     public MenuScreen(Snakegod game) {
         this.game = game;
@@ -32,17 +36,22 @@ public class MenuScreen implements Screen {
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
 
+        playColor = Color.SKY;
+        exitColor = Color.RED;
+
         stage = new Stage();
         textButtonStyle = new TextButtonStyle();
         textButtonStyle.font = bmf;
-        textButtonStyle.overFontColor = Color.GREEN;
 
+        shape = new ShapeRenderer();
 
         playButton = new TextButton("Play", textButtonStyle);
-        playButton.setPosition(450,550);
+        playButton.setPosition(400,550);
+        playButton.setWidth(200);
 
         exitButton = new TextButton("Exit", textButtonStyle);
-        exitButton.setPosition(450,450);
+        exitButton.setPosition(400,450);
+        exitButton.setWidth(200);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -66,6 +75,12 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        shape.begin(ShapeRenderer.ShapeType.Filled);
+        shape.setColor(playColor);
+        shape.rect(400,550, 200, 50);
+        shape.setColor(exitColor);
+        shape.rect(400,450, 200, 50);
+        shape.end();
         stage.draw();
     }
 
