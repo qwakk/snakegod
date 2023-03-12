@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        speed = 1;
+        speed = 16;
         score = 0;
         batch = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
@@ -59,35 +59,29 @@ public class GameScreen implements Screen {
                 , new ArrayList<>(Arrays.asList(Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)));
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 64, 64);
-        viewport = new FitViewport(64,64, camera);
+        camera.setToOrtho(false, 1024, 1024);
+        viewport = new FitViewport(1024,1024, camera);
 
         shape = new ShapeRenderer();
         snake = new Rectangle();
-        snake.width = 1;
-        snake.height = 1;
+        snake.width = 16;
+        snake.height = 16;
 
-        snakeOne.snakeList.add(new Vector2(7,10));
-        snakeOne.snakeList.add(new Vector2(8,10));
-        snakeOne.snakeList.add(new Vector2(9,10));
-        snakeOne.snakeList.add(new Vector2(10,10));
-        snakeOne.snakeList.add(new Vector2(11,10));
-        snakeOne.snakeList.add(new Vector2(12,10));
-        snakeOne.snakeList.add(new Vector2(13,10));
+        snakeOne.snakeList.add(new Vector2(0,512));
+        snakeOne.snakeList.add(new Vector2(16,512));
+        snakeOne.snakeList.add(new Vector2(32,512));
+        snakeOne.snakeList.add(new Vector2(48,512));
 
-        snakeTwo.snakeList.add(new Vector2(56,11));
-        snakeTwo.snakeList.add(new Vector2(55,11));
-        snakeTwo.snakeList.add(new Vector2(54,11));
-        snakeTwo.snakeList.add(new Vector2(53,11));
-        snakeTwo.snakeList.add(new Vector2(52,11));
-        snakeTwo.snakeList.add(new Vector2(51,11));
-        snakeTwo.snakeList.add(new Vector2(50,11));
+        snakeTwo.snakeList.add(new Vector2(1008,512));
+        snakeTwo.snakeList.add(new Vector2(992,512));
+        snakeTwo.snakeList.add(new Vector2(976,512));
+        snakeTwo.snakeList.add(new Vector2(960,512));
 
         juicer = new Rectangle();
-        juicer.x = 20;
-        juicer.y = 20;
-        juicer.width = 1;
-        juicer.height = 1;
+        juicer.x = 512;
+        juicer.y = 512;
+        juicer.width = 16;
+        juicer.height = 16;
     }
 
     @Override
@@ -128,7 +122,8 @@ public class GameScreen implements Screen {
         }
 
         batch.begin();
-        bmf.draw(batch, "SCORE = "+score.toString(),0,viewport.getWorldHeight());
+        batch.setProjectionMatrix(camera.combined);
+        bmf.draw(batch, "SCORE = "+score.toString(),0,1024);
         batch.end();
 
         count += Gdx.graphics.getDeltaTime();
@@ -163,8 +158,8 @@ public class GameScreen implements Screen {
     public void hitCheck(LinkedList<Vector2> snake) {
         if (snake.getLast().x == juicer.x && snake.getLast().y == juicer.y) {
             snake.addFirst(new Vector2(snake.getFirst().x, snake.getFirst().y));
-            juicer.x = (int) (Math.random() * (63-1) + 1);
-            juicer.y = (int) (Math.random() * (63-1) + 1);
+            juicer.x = (int) (Math.random() * (15-1) + 1)*64;
+            juicer.y = (int) (Math.random() * (15-1) + 1)*64;
             score++;
         }
     }
