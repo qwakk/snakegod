@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
     double count;
     Integer score;
     int speed;
+    FitViewport viewport;
 
     Snakegod game;
 
@@ -47,7 +49,6 @@ public class GameScreen implements Screen {
         parameter.size = 44;
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
-        bmf.getData().setScale(1,1);
         count = 0;
 
         snakeOne = new Snake(Snakegod.direction.RIGHT, Snakegod.direction.RIGHT, new LinkedList<>()
@@ -58,6 +59,7 @@ public class GameScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 64, 64);
+        viewport = new FitViewport(64,64, camera);
         shape = new ShapeRenderer();
         snake = new Rectangle();
         snake.width = 1;
@@ -132,7 +134,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width,height);
     }
 
     @Override
