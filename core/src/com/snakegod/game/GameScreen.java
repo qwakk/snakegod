@@ -158,9 +158,9 @@ public class GameScreen implements Screen {
     }
 
     public void snakeStart(Snake one, Snake two, int startLength) {
-        int startY = Gdx.graphics.getWidth()/2;
+        int startY = 1024/2;
         int startOne = 0;
-        int startTwo = Gdx.graphics.getWidth()-unit;
+        int startTwo = 1024-unit;
         for (int i = 0; i < startLength; i++) {
             one.snakeList.add(new Vector2(startOne,startY));
             two.snakeList.add(new Vector2(startTwo,startY));

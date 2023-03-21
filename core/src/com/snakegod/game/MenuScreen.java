@@ -40,8 +40,8 @@ public class MenuScreen implements Screen {
         bmf.setColor(Color.WHITE);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        camera.setToOrtho(false, 1024, 1024);
+        viewport = new FitViewport(1024, 1024, camera);
 
         stage = new Stage();
         stage.setViewport(viewport);
