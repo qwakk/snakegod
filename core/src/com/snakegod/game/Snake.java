@@ -12,9 +12,9 @@ public class Snake {
 
     ArrayList<Integer> inputList;
 
-    public Snake(Snakegod.direction d, Snakegod.direction ld, LinkedList<Vector2> snakeList, ArrayList<Integer> inputList) {
+    public Snake(Snakegod.direction d, LinkedList<Vector2> snakeList, ArrayList<Integer> inputList) {
         this.d = d;
-        this.ld = ld;
+        this.ld = d;
         this.snakeList = snakeList;
         this.inputList = inputList;
     }

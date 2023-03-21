@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -34,13 +35,13 @@ public class MenuScreen implements Screen {
     public void show() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 38;
+        parameter.size = 44;
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1024, 1024);
-        viewport = new FitViewport(1024,1024,camera);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
         stage = new Stage();
         stage.setViewport(viewport);
@@ -53,32 +54,28 @@ public class MenuScreen implements Screen {
         exitButtonStyle.fontColor = Color.RED;
 
         playButton = new TextButton("Play", playButtonStyle);
-        playButton.setPosition(400,550);
-        playButton.setWidth(200);
-
         exitButton = new TextButton("Exit", exitButtonStyle);
-        exitButton.setPosition(400,450);
-        exitButton.setWidth(200);
-        exitButton.setColor(Color.RED);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.changeScreen(new GameScreen(game));
             }
         });
-
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
-        stage.addActor(playButton);
-        stage.addActor(exitButton);
+
+        Table menuTable = new Table();
+        menuTable.add(playButton).pad(20).minWidth(Gdx.graphics.getWidth()*0.2f);
+        menuTable.row();
+        menuTable.add(exitButton).pad(20).minWidth(Gdx.graphics.getWidth()*0.2f);
+        menuTable.setFillParent(true);
+
+        stage.addActor(menuTable);
         Gdx.input.setInputProcessor(stage);
-
-
-
     }
 
     @Override
