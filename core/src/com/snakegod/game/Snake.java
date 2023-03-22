@@ -27,6 +27,8 @@ public class Snake {
 
     public List<Vector2> getTail() { return snakeList.subList(0,length()-1); }
 
+    public List<Vector2> getSnake(){ return snakeList; }
+
     public int length() { return snakeList.size(); }
 
     public void add(Vector2 v) {

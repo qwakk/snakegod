@@ -153,7 +153,7 @@ public class GameScreen implements Screen {
 
     public void deathCheck(Snake one, Snake two) {
         if (one.getTail().contains(one.getHead())
-                || two.snakeList.contains(one.getHead())) {
+                || two.getSnake().contains(one.getHead())) {
             game.setMenuScreen();
         }
     }
