@@ -4,12 +4,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Snake {
     Snakegod.direction d;
     Snakegod.direction ld;
     LinkedList<Vector2> snakeList;
-
     ArrayList<Integer> inputList;
 
     public Snake(Snakegod.direction d, LinkedList<Vector2> snakeList, ArrayList<Integer> inputList) {
@@ -23,11 +23,23 @@ public class Snake {
         return snakeList.getLast();
     }
 
+    public Vector2 getLastTail() { return snakeList.getFirst(); }
+
+    public List<Vector2> getTail() { return snakeList.subList(0,length()-1); }
+
+    public int length() { return snakeList.size(); }
+
+    public void add(Vector2 v) {
+        snakeList.add(v);
+    }
+    public void addFirst(Vector2 v) {
+        snakeList.addFirst(v);
+    }
+
     public void move(int speed) {
-        snakeList.removeFirst();
-        float x = snakeList.getLast().x;
-        float y = snakeList.getLast().y;
-        Vector2 moving = new Vector2(x,y);
+        Vector2 moving = snakeList.removeFirst();
+        moving.x = getHead().x;
+        moving.y = getHead().y;
 
         if(d == Snakegod.direction.LEFT) {
             moving.x -= speed;

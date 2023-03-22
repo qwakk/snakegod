@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
     Snake snakeOne;
     Snake snakeTwo;
     double count;
-    Integer score;
+    int score;
     int unit;
     Snakegod game;
 
@@ -40,12 +40,6 @@ public class GameScreen implements Screen {
     public void show() {
         unit = 16;
         score = 0;
-        batch = new SpriteBatch();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 44;
-        bmf = generator.generateFont(parameter);
-        bmf.setColor(Color.WHITE);
 
         snakeOne = new Snake(
                 Snakegod.direction.RIGHT, new LinkedList<>(),
@@ -55,10 +49,17 @@ public class GameScreen implements Screen {
                 Snakegod.direction.LEFT, new LinkedList<>(),
                 new ArrayList<>(Arrays.asList(Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)));
 
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 44;
+        bmf = generator.generateFont(parameter);
+        bmf.setColor(Color.WHITE);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 1024);
         viewport = new FitViewport(1024,1024, camera);
 
+        batch = new SpriteBatch();
         shape = new ShapeRenderer();
 
         snakeStart(snakeOne,snakeTwo, 5);
@@ -82,8 +83,8 @@ public class GameScreen implements Screen {
             snakeOne.move(unit);
             snakeTwo.move(unit);
 
-            hitCheck(snakeOne.snakeList);
-            hitCheck(snakeTwo.snakeList);
+            hitCheck(snakeOne);
+            hitCheck(snakeTwo);
             deathCheck(snakeOne, snakeTwo);
             deathCheck(snakeTwo, snakeOne);
             count -= 0.1;
@@ -109,7 +110,7 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
-        bmf.draw(batch, "SCORE = "+score.toString(),0,1024);
+        bmf.draw(batch, "SCORE = "+score,10,1014);
         batch.end();
 
         count += Gdx.graphics.getDeltaTime();
@@ -141,18 +142,18 @@ public class GameScreen implements Screen {
         batch.dispose();
     }
 
-    public void hitCheck(LinkedList<Vector2> snake) {
-        if (snake.getLast().equals(juicer)) {
-            snake.addFirst(new Vector2(snake.getFirst()));
+    public void hitCheck(Snake snake) {
+        if (snake.getHead().equals(juicer)) {
+            snake.addFirst(new Vector2(snake.getLastTail()));
             juicer.x = (int) (Math.random() * (15-1) + 1)*64;
             juicer.y = (int) (Math.random() * (15-1) + 1)*64;
             score++;
         }
     }
 
-    public void deathCheck(Snake check1, Snake check2) {
-        if (check1.snakeList.subList(0,check1.snakeList.size()-1).contains(check1.getHead())
-                || check2.snakeList.contains(check1.getHead())) {
+    public void deathCheck(Snake one, Snake two) {
+        if (one.getTail().contains(one.getHead())
+                || two.snakeList.contains(one.getHead())) {
             game.setMenuScreen();
         }
     }
@@ -162,8 +163,8 @@ public class GameScreen implements Screen {
         int startOne = 0;
         int startTwo = 1024-unit;
         for (int i = 0; i < startLength; i++) {
-            one.snakeList.add(new Vector2(startOne,startY));
-            two.snakeList.add(new Vector2(startTwo,startY));
+            one.add(new Vector2(startOne,startY));
+            two.add(new Vector2(startTwo,startY));
             startOne+=unit;
             startTwo-=unit;
         }
