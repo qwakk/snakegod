@@ -87,7 +87,7 @@ public class GameScreen implements Screen {
             hitCheck(snakeTwo);
             deathCheck(snakeOne, snakeTwo);
             deathCheck(snakeTwo, snakeOne);
-            count -= 0.1;
+            count = 0;
         }
 
         ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1);
