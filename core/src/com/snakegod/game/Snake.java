@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
-    Snakegod.direction d;
-    Snakegod.direction ld;
-    LinkedList<Vector2> snakeList;
-    ArrayList<Integer> inputList;
+    protected Snakegod.direction d;
+    protected Snakegod.direction ld;
+    protected LinkedList<Vector2> snakeList;
+    protected ArrayList<Integer> inputList;
 
     public Snake(Snakegod.direction d, LinkedList<Vector2> snakeList, ArrayList<Integer> inputList) {
         this.d = d;
@@ -22,13 +22,9 @@ public class Snake {
     public Vector2 getHead() {
         return snakeList.getLast();
     }
-
     public Vector2 getLastTail() { return snakeList.getFirst(); }
-
     public List<Vector2> getTail() { return snakeList.subList(0,length()-1); }
-
     public List<Vector2> getSnake(){ return snakeList; }
-
     public int length() { return snakeList.size(); }
 
     public void add(Vector2 v) {

@@ -15,17 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MenuScreen implements Screen {
-
-    Snakegod game;
-    BitmapFont bmf;
-    Stage stage;
-    TextButtonStyle playButtonStyle;
-    TextButtonStyle exitButtonStyle;
-    TextButton playButton;
-    TextButton exitButton;
-
-    OrthographicCamera camera;
-    FitViewport viewport;
+    private Snakegod game;
+    private BitmapFont bmf;
+    private Stage stage;
+    private TextButtonStyle playButtonStyle;
+    private TextButtonStyle exitButtonStyle;
+    private TextButton playButton;
+    private TextButton exitButton;
+    private OrthographicCamera camera;
+    private FitViewport viewport;
 
     public MenuScreen(Snakegod game) {
         this.game = game;
@@ -33,15 +31,15 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Snakegod.fontPath));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 44;
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1024, 1024);
-        viewport = new FitViewport(1024, 1024, camera);
+        camera.setToOrtho(false, Snakegod.gameWidth, Snakegod.gameHeight);
+        viewport = new FitViewport(Snakegod.gameWidth, Snakegod.gameHeight, camera);
 
         stage = new Stage();
         stage.setViewport(viewport);
@@ -89,19 +87,13 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() { /*NYI*/ }
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() { /*NYI*/ }
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() { /*NYI*/ }
 
     @Override
     public void dispose() {

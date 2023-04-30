@@ -19,18 +19,18 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class GameScreen implements Screen {
-    SpriteBatch batch;
-    BitmapFont bmf;
-    OrthographicCamera camera;
-    FitViewport viewport;
-    Vector2 juicer;
-    ShapeRenderer shape;
-    Snake snakeOne;
-    Snake snakeTwo;
-    double count;
-    int score;
-    int unit;
-    Snakegod game;
+    private SpriteBatch batch;
+    private BitmapFont bmf;
+    private OrthographicCamera camera;
+    private FitViewport viewport;
+    private Vector2 scorePoint;
+    private ShapeRenderer shape;
+    private Snake snakeOne;
+    private Snake snakeTwo;
+    private double count;
+    private int score;
+    private final int unit = 16;
+    private Snakegod game;
 
     public GameScreen(Snakegod game) {
         this.game = game;
@@ -38,7 +38,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        unit = 16;
         score = 0;
 
         snakeOne = new Snake(
@@ -49,24 +48,22 @@ public class GameScreen implements Screen {
                 Snakegod.direction.LEFT, new LinkedList<>(),
                 new ArrayList<>(Arrays.asList(Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)));
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AvantGarde Normal.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Snakegod.fontPath));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 44;
         bmf = generator.generateFont(parameter);
         bmf.setColor(Color.WHITE);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1024, 1024);
-        viewport = new FitViewport(1024,1024, camera);
+        camera.setToOrtho(false, Snakegod.gameWidth, Snakegod.gameHeight);
+        viewport = new FitViewport(Snakegod.gameWidth,Snakegod.gameHeight, camera);
 
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
 
         snakeStart(snakeOne,snakeTwo, 5);
 
-        juicer = new Vector2();
-        juicer.x = (int) (Math.random() * (15-1) + 1)*64;
-        juicer.y = (int) (Math.random() * (15-1) + 1)*64;
+        scorePoint = createRandomPoint();
 
         count = 0;
     }
@@ -105,7 +102,7 @@ public class GameScreen implements Screen {
         }
 
         shape.setColor(Color.GREEN);
-        shape.rect(juicer.x, juicer.y, unit, unit);
+        shape.rect(scorePoint.x, scorePoint.y, unit, unit);
         shape.end();
 
         batch.begin();
@@ -122,19 +119,11 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
-
+    public void pause() { /*NYI*/ }
     @Override
-    public void resume() {
-
-    }
-
+    public void resume() { /*NYI*/ }
     @Override
-    public void hide() {
-
-    }
+    public void hide() { /*NYI*/ }
 
     @Override
     public void dispose () {
@@ -143,30 +132,35 @@ public class GameScreen implements Screen {
     }
 
     public void hitCheck(Snake snake) {
-        if (snake.getHead().equals(juicer)) {
+        if (snake.getHead().equals(scorePoint)) {
             snake.addFirst(new Vector2(snake.getLastTail()));
-            juicer.x = (int) (Math.random() * (15-1) + 1)*64;
-            juicer.y = (int) (Math.random() * (15-1) + 1)*64;
+            scorePoint = createRandomPoint();
             score++;
         }
     }
 
     public void deathCheck(Snake one, Snake two) {
-        if (one.getTail().contains(one.getHead())
+        if (    one.getTail().contains(one.getHead())
                 || two.getSnake().contains(one.getHead())) {
             game.setMenuScreen();
         }
     }
 
     public void snakeStart(Snake one, Snake two, int startLength) {
-        int startY = 1024/2;
+        int startY = Snakegod.gameHeight/2;
         int startOne = 0;
-        int startTwo = 1024-unit;
+        int startTwo = Snakegod.gameWidth-unit;
         for (int i = 0; i < startLength; i++) {
             one.add(new Vector2(startOne,startY));
             two.add(new Vector2(startTwo,startY));
             startOne+=unit;
             startTwo-=unit;
         }
+    }
+
+    public Vector2 createRandomPoint() {
+        return new Vector2(
+                (int) (Math.random() * (15-1) + 1)*64,
+                (int) (Math.random() * (15-1) + 1)*64);
     }
 }
